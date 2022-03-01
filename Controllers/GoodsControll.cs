@@ -4,20 +4,22 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 
 
-namespace Goods.Controllers
+namespace Good.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class Goods : Controller
+    public class Good : Controller
     {
         static List<Product> entries = new List<Product>();
         // GET all: api/Goods
         [HttpGet]
+        [Authorize]
         public string Read()
         {
             string output = "Nothing has been added";
@@ -32,8 +34,10 @@ namespace Goods.Controllers
             return output;
         }
 
+        
         // GET api/Brands/{id}
         [HttpGet("{id}")]
+        [Authorize]
         public string Read(int id)
         {
             string outPut = "Not Found";
@@ -55,21 +59,29 @@ namespace Goods.Controllers
             WebRequest web = WebRequest.Create("https://localhost:5001/api/Brands");
             WebResponse response = web.GetResponse();
             int flag = 0;
+            Entry json = new Entry();
             using(Stream stream = response.GetResponseStream())
             {
                 using(StreamReader reader = new StreamReader(stream))
                 {
                     string line = "";
-                    while ((line = reader.ReadLine()) != ent.bName) { Console.WriteLine(line); }
-                    while((line = reader.ReadLine())!= "\n")
+                    while ((line = reader.ReadLine()) != null)
                     {
-                        if (line.Contains(ent.size.ToString()))
+                        json = JsonConvert.DeserializeObject<Entry>(line);
+                        if (json.name == ent.bName)
+                        {
+                            break;
+                        }
+                    }
+
+                    foreach (var size in json.size)
+                    {
+                        if (size.brSize == ent.size)
                         {
                             flag = 1;
                             break;
                         }
                     }
-                    
 
                 }
             }

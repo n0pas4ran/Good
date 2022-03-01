@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Goods
+namespace Good
 {
     public class Product
     {

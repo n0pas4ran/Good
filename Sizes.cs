@@ -1,5 +1,5 @@
 ﻿using System;
-namespace MyApp
+namespace Good
 {
     public class Sizes
     {

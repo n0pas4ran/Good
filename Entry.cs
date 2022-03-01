@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-namespace MyApp
+namespace Good
 {
 
     public class Entry
